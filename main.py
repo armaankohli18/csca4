@@ -45,7 +45,7 @@ def hash_size(ht: HashTable) -> int:
   return len(ht.bins)
 # Return the number of elements (key-value pairs) in 'ht'.
 def hash_count(ht: HashTable) -> int:
-pass
+  return ht.count
 # Return whether 'ht' contains a mapping for the given 'word'.
 def has_key(ht: HashTable, word: str) -> bool:
 pass
