@@ -12,6 +12,24 @@ class IntNode:
   first: int
   rest: IntList
 
+@dataclass
+class WordLines:
+  key : str
+  linenums: IntList
+
+WordLinesList: TypeAlias = Union[None, "WLNode"]
+
+@dataclass(frozen=True)
+class WLNode:
+  first: WordLines
+  rest: WordLinesList
+
+@dataclass
+class HashTable:
+  bins: list[WordLinesList]
+  count: int
+
+
 class Tests(unittest.TestCase):
   pass
   
