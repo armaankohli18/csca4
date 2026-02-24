@@ -52,14 +52,16 @@ def hash_count(ht: HashTable) -> int:
 def has_key(ht: HashTable, word: str) -> bool:
   index = hash_fn(word) % hash_size(ht)
   bin = ht.bins[index]
-  match bin:
+  return has_key_helper(bin, word)
+  
+def has_key_helper(n: WordLinesList, word: str) -> bool:
+  match n:
     case None:
       return False
     case WLNode(f, r):
       if f.key == word:
         return True
-      else:
-        has
+      return has_key_helper(r, word)
 
 
 
