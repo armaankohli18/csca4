@@ -38,10 +38,11 @@ def hash_fn(s: str) -> int:
 # Make a fresh hash table with the given number of bins 'size',
 # containing no elements.
 def make_hash(size: int) -> HashTable:
-pass
+  return HashTable([None]*size, 0)
+
 # Return the number of bins in 'ht'.
 def hash_size(ht: HashTable) -> int:
-pass
+
 # Return the number of elements (key-value pairs) in 'ht'.
 def hash_count(ht: HashTable) -> int:
 pass
