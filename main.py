@@ -42,7 +42,7 @@ def make_hash(size: int) -> HashTable:
 
 # Return the number of bins in 'ht'.
 def hash_size(ht: HashTable) -> int:
-
+  return len(ht.bins)
 # Return the number of elements (key-value pairs) in 'ht'.
 def hash_count(ht: HashTable) -> int:
 pass
