@@ -43,12 +43,27 @@ def make_hash(size: int) -> HashTable:
 # Return the number of bins in 'ht'.
 def hash_size(ht: HashTable) -> int:
   return len(ht.bins)
+
 # Return the number of elements (key-value pairs) in 'ht'.
 def hash_count(ht: HashTable) -> int:
   return ht.count
+
 # Return whether 'ht' contains a mapping for the given 'word'.
 def has_key(ht: HashTable, word: str) -> bool:
-pass
+  index = hash_fn(word) % hash_size(ht)
+  bin = ht.bins[index]
+  match bin:
+    case None:
+      return False
+    case WLNode(f, r):
+      if f.key == word:
+        return True
+      else:
+        has
+
+
+
+
 # Return the line numbers associated with the key 'word' in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def lookup(ht: HashTable, word: str) -> List[int]:
