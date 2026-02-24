@@ -31,7 +31,10 @@ class HashTable:
 
 # Return the hash code of 's' (see assignment description).
 def hash_fn(s: str) -> int:
-pass
+  h = 0
+  for ch in s:
+      h = h * 31 + ord(ch)
+  return h
 # Make a fresh hash table with the given number of bins 'size',
 # containing no elements.
 def make_hash(size: int) -> HashTable:
