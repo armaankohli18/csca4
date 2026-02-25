@@ -63,9 +63,6 @@ def has_key_helper(n: WordLinesList, word: str) -> bool:
         return True
       return has_key_helper(r, word)
 
-
-
-
 # Return the line numbers associated with the key 'word' in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def lookup(ht: HashTable, word: str) -> List[int]:
