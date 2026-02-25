@@ -106,8 +106,28 @@ def add_helper(n: WordLinesList, word: str, line: int):
           return WLNode(newword, None), True
         case WLNode(f, r):
           if f.key == word:
+            if not contains(f.linenums, line):
+              f.linenums = IntNode(line, f.linenums)
+            return n, False
+          else:
+            updated_rest, inserted = add_helper(r, word, line)
+            return WLNode(f, updated_rest), inserted
             
-            
+def contains(IL: IntList, val : int) -> bool:
+  match IL:
+    case None:
+      return False
+    case IntNode(f, r):
+      if f == val:
+        return True
+      else:
+        return contains(r, val)
+      
+def resize(ht: HashTable) -> None:
+    old_bins = ht.bins
+    new_size = hash_size(ht) * 2
+    ht.bins = [None] * new_size
+    ht.count = 0
 # Return the words that have mappings in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def hash_keys(ht: HashTable) -> List[str]:
