@@ -88,11 +88,26 @@ def il_to_list(Il: IntList) -> list[int]:
     case IntNode(f, r):
       output.append(f)
       return output + il_to_list(r)
-
     
 # Record in 'ht' that 'word' has an occurrence on line 'line'.
 def add(ht: HashTable, word: str, line: int) -> None:
-pass
+  index = hash_fn(word) % hash_size(ht)
+  bin = ht.bins[index]
+  bin_new , inserted = add_helper(bin, word, line)
+  ht.bins[index] = bin_new
+  if inserted:
+    ht.count += 1
+
+def add_helper(n: WordLinesList, word: str, line: int):
+    match n:
+        case None:
+          lines = IntNode(line, None)
+          newword = WordLines(word, lines)
+          return WLNode(newword, None), True
+        case WLNode(f, r):
+          if f.key == word:
+            
+            
 # Return the words that have mappings in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def hash_keys(ht: HashTable) -> List[str]:
