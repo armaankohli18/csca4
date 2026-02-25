@@ -69,7 +69,30 @@ def has_key_helper(n: WordLinesList, word: str) -> bool:
 # Return the line numbers associated with the key 'word' in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def lookup(ht: HashTable, word: str) -> List[int]:
-pass
+  index = hash_fn(word) % hash_size(ht)
+  bin = ht.bins[index] 
+  return lookup_helper(bin, word)
+
+def lookup_helper(n: WordLinesList, word: str) -> list[int]:
+  match n:
+    case None:
+      return []
+    case WLNode(f, r):
+      if f.key == word:
+        return il_to_list(f.linenums)
+      else:
+        return lookup_helper(r, word)
+
+def il_to_list(Il: IntList) -> list[int]:
+  output : list[int] = []
+  match Il:
+    case None:
+      return []
+    case IntNode(f, r):
+      output.append(f)
+      return output + il_to_list(r)
+
+    
 # Record in 'ht' that 'word' has an occurrence on line 'line'.
 def add(ht: HashTable, word: str, line: int) -> None:
 pass
