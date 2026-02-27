@@ -158,23 +158,23 @@ def make_concordance(stop_words: HashTable, lines: List[str]) -> HashTable:
 #file.
 def full_concordance(in_file: str, stop_words_file: str, out_file: str) -> None:
   stop_words = make_hash(128)
-  with open(stop_words_file, "r") as file:
+  with open(stop_words_file, "r", encoding="utf-8") as file:
     for line in file:
       word = line.strip().lower()
       if word != "":
         add(stop_words, word, 0)
-  with open(in_file, "r") as infile:
+  with open(in_file, "r", encoding="utf-8") as infile:
     lines = infile.readlines()
   concordance = make_concordance(stop_words, lines)
   keys = hash_keys(concordance)
   keys.sort()
-  with open(out_file, "w") as outfile:
+  with open(out_file, "w", encoding="utf-8") as outfile:
     for word in keys:
       numbers = lookup(concordance, word)
       numbers.sort()
       outfile.write(word + ": " + " ".join(str(number) for number in numbers) + "\n")
 class Tests(unittest.TestCase):
-  
+  pass
   
 if (__name__ == '__main__'):
   unittest.main()
