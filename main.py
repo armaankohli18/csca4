@@ -139,19 +139,19 @@ def hash_keys(ht: HashTable) -> List[str]:
 # a sequence of strings 'lines' representing the lines of a document,
 # return a hash table representing a concordance of that document.
 def make_concordance(stop_words: HashTable, lines: List[str]) -> HashTable:
-  concordance = make_hash(hash_size(stop_words))
+  concordance = make_hash(128)
   linenumber = 1
   for line in lines:
+    line = line.replace("'", "")
+    for p in string.punctuation:
+      line = line.replace(p, " ")
+    line = line.lower()
     words = line.split()
     for word in words:
-      word = word.lower()
-      word = word.strip(string.punctuation)
-      if word != "" and not has_key(stop_words, word):
+      if word.isalpha() and not has_key(stop_words, word):
         add(concordance, word, linenumber)
     linenumber += 1
   return concordance
-
-
 
 # Given an input file path, a stop-words file path, and an output file path,
 # overwrite the indicated output file with a sorted concordance of the input
