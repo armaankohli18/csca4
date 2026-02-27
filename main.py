@@ -91,7 +91,20 @@ def il_to_list(Il: IntList) -> list[int]:
     
 # Record in 'ht' that 'word' has an occurrence on line 'line'.
 def add(ht: HashTable, word: str, line: int) -> None:
-  
+  index = hash_fn(word) % hash_size(ht)
+  node = ht.bins[index]
+  while node is not None:
+    if node.first.key == word:
+      linesword = node.first.linenums
+      while linesword is not None:
+        if linesword.first == line:
+          return None
+        linesword = linesword.rest
+      node.first.linenums = IntNode(line, node.first.linenums)
+      return
+    node = node.rest
+  ht.bins[index] = WLNode(WordLines(word, IntNode(line, None)), ht.bins[index])
+  ht.count += 1
 
 # Return the words that have mappings in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
