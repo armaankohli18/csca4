@@ -176,5 +176,5 @@ def full_concordance(in_file: str, stop_words_file: str, out_file: str) -> None:
 class Tests(unittest.TestCase):
   
   
-  if (__name__ == '__main__'):
-    unittest.main()
+if (__name__ == '__main__'):
+  unittest.main()
