@@ -174,23 +174,41 @@ def full_concordance(in_file: str, stop_words_file: str, out_file: str) -> None:
       numbers.sort()
       outfile.write(word + ": " + " ".join(str(number) for number in numbers) + "\n")
 class Tests(unittest.TestCase):
-  ht1 = make_hash(8)
-  ht2 = make_hash(2)
-
   def test_hash_fn(self):
     self.assertEqual(hash_fn("a"), ord("a"))
     self.assertEqual(hash_fn("b"), ord("b"))
     self.assertNotEqual(hash_fn("a"), ord("b"))
   
   def test_make_hash(self):
-    self.assertEqual(self.ht1, HashTable([None, None, None, None, None, None, None, None], 0))
-    self.assertEqual(self.ht2, HashTable([None, None], 0))
+    ht1 = make_hash(8)
+    ht2 = make_hash(2)
+    self.assertEqual(ht1, HashTable([None, None, None, None, None, None, None, None], 0))
+    self.assertEqual(ht2, HashTable([None, None], 0))
   
   def test_hash_size(self):
-    self.assertEqual(hash_size(self.ht1), 8)
-    self.assertEqual(hash_size(self.ht2), 2)
+    ht1 = make_hash(8)
+    ht2 = make_hash(2)
+    self.assertEqual(hash_size(ht1), 8)
+    self.assertEqual(hash_size(ht2), 2)
 
-  def 
+  def test_hash_count(self):
+        ht1 = make_hash(5)
+        add(ht1, "Armaan", 1)
+        self.assertEqual(hash_count(ht1), 1)
+
+  def test_has_key(self):
+    ht = make_hash(5)
+    add(ht, "Ashlyn", 1)
+    self.assertEqual(has_key(ht, "Ashlyn"), True)
+    self.assertEqual(has_key(ht, "Armaan"), False)
+    self.assertEqual(has_key(ht, "Philbrock"), False)
+
+  def test_has_key_helper(self):
+    n = WLNode(WordLines("Armaan", IntNode(1, None)), None)
+    self.assertEqual(has_key_helper(n, "Armaan"), True)
+    self.assertEqual(has_key_helper(n, "Ashlyn"), False)
+    self.assertEqual(has_key_helper(n, "Philbrick"), False)
+
 
   
 if (__name__ == '__main__'):
