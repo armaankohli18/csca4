@@ -91,43 +91,8 @@ def il_to_list(Il: IntList) -> list[int]:
     
 # Record in 'ht' that 'word' has an occurrence on line 'line'.
 def add(ht: HashTable, word: str, line: int) -> None:
-  index = hash_fn(word) % hash_size(ht)
-  bin = ht.bins[index]
-  bin_new , inserted = add_helper(bin, word, line)
-  ht.bins[index] = bin_new
-  if inserted:
-    ht.count += 1
+  
 
-def add_helper(n: WordLinesList, word: str, line: int):
-    match n:
-        case None:
-          lines = IntNode(line, None)
-          newword = WordLines(word, lines)
-          return WLNode(newword, None), True
-        case WLNode(f, r):
-          if f.key == word:
-            if not contains(f.linenums, line):
-              f.linenums = IntNode(line, f.linenums)
-            return n, False
-          else:
-            updated_rest, inserted = add_helper(r, word, line)
-            return WLNode(f, updated_rest), inserted
-            
-def contains(IL: IntList, val : int) -> bool:
-  match IL:
-    case None:
-      return False
-    case IntNode(f, r):
-      if f == val:
-        return True
-      else:
-        return contains(r, val)
-      
-def resize(ht: HashTable) -> None:
-    old_bins = ht.bins
-    new_size = hash_size(ht) * 2
-    ht.bins = [None] * new_size
-    ht.count = 0
 # Return the words that have mappings in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def hash_keys(ht: HashTable) -> List[str]:
