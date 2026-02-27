@@ -105,19 +105,57 @@ def add(ht: HashTable, word: str, line: int) -> None:
     node = node.rest
   ht.bins[index] = WLNode(WordLines(word, IntNode(line, None)), ht.bins[index])
   ht.count += 1
+  if hash_count(ht) >= hash_size(ht):
+    resize(ht)
+
+def resize(ht : HashTable) -> None:
+  size = hash_size(ht) * 2
+  bins : list[WordLinesList] = [None] * size
+  for bin in ht.bins:
+    rehash(bin, bins, size)
+  ht.bins = bins
+
+def rehash(n: WordLinesList, bins: list[WordLinesList], size: int) -> None:
+  match n:
+    case None:
+      return None
+    case WLNode(f, r):
+      index = hash_fn(f.key) % size
+      bins[index] = WLNode(f, bins[index])
+      rehash(r, bins, size)
 
 # Return the words that have mappings in 'ht'.
 # The returned list should not contain duplicates, but need not be sorted.
 def hash_keys(ht: HashTable) -> List[str]:
-pass
+  output : list[str] = []
+  for bin in ht.bins:
+    node = bin
+    while node is not None:
+      output.append(node.first.key)
+      node = node.rest
+  return output
+
 # Given a hash table 'stop_words' containing stop words as keys, plus
 # a sequence of strings 'lines' representing the lines of a document,
 # return a hash table representing a concordance of that document.
 def make_concordance(stop_words: HashTable, lines: List[str]) -> HashTable:
-pass
+  concordance = make_hash(hash_size(stop_words))
+  linenumber = 1
+  for line in lines:
+    words = line.split()
+    for word in words:
+      word = word.lower()
+      word = word.strip(string.punctuation)
+      if word != "" and not has_key(stop_words, word):
+        add(concordance, word, linenumber)
+    linenumber += 1
+  return concordance
+
+
+
 # Given an input file path, a stop-words file path, and an output file path,
 # overwrite the indicated output file with a sorted concordance of the input
-file.
+#file.
 def full_concordance(in_file: str, stop_words_file: str, out_file: str) -> None:
 pass
 
