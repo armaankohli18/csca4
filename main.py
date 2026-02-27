@@ -173,7 +173,9 @@ def full_concordance(in_file: str, stop_words_file: str, out_file: str) -> None:
       numbers = lookup(concordance, word)
       numbers.sort()
       outfile.write(word + ": " + " ".join(str(number) for number in numbers) + "\n")
+
 class Tests(unittest.TestCase):
+
   def test_hash_fn(self):
     self.assertEqual(hash_fn("a"), ord("a"))
     self.assertEqual(hash_fn("b"), ord("b"))
@@ -208,7 +210,63 @@ class Tests(unittest.TestCase):
     self.assertEqual(has_key_helper(n, "Armaan"), True)
     self.assertEqual(has_key_helper(n, "Ashlyn"), False)
     self.assertEqual(has_key_helper(n, "Philbrick"), False)
+  
+  def test_lookup(self):
+    ht = make_hash(5)
+    add(ht, "Armaan", 1)
+    add(ht, "Ashlyn", 2)
+    self.assertEqual(lookup(ht, "Armaan"), [1])
+    self.assertEqual(lookup(ht, "Ashlyn"), [2])
+    self.assertEqual(lookup(ht, "Philbrick"), [])
 
+  def test_lookup_helper(self):
+    n = WLNode(WordLines("Armaan", IntNode(1, None)), None)
+    self.assertEqual(lookup_helper(n, "Armaan"), [1])
+    self.assertEqual(lookup_helper(n, "Data"), [])
+
+  def test_il_to_list(self):
+    il = IntNode(1, IntNode(2, None))
+    self.assertEqual(il_to_list(il), [1, 2])
+    self.assertNotEqual(il_to_list(il), [1, 2, 3])
+    self.assertNotEqual(il_to_list(il), [1, 3])
+
+  def test_add(self):
+    ht = make_hash(5)
+    add(ht, "Armaan", 1)
+    add(ht, "Armaan", 1)
+    self.assertEqual(hash_count(ht), 1)
+    self.assertNotEqual(hash_count(ht), 2)
+
+  def test_resize(self):
+    ht = make_hash(2)
+    add(ht, "Armaan", 1)
+    add(ht, "Ashlyn", 2)
+    self.assertEqual(hash_size(ht) >= 2, True)
+    self.assertEqual(has_key(ht, "Philbrick"), False)
+
+  def test_rehash(self):
+    n = WLNode(WordLines("Armaan", IntNode(1, None)), WLNode(WordLines("Ashlyn", IntNode(2, None)), None))
+    bins : List[WordLinesList]= [None] * 4
+    rehash(n, bins, 4)
+    index_a = hash_fn("Armaan") % 4
+    index_b = hash_fn("Ashlyn") % 4
+    self.assertEqual(has_key_helper(bins[index_a], "Armaan"), True)
+    self.assertEqual(has_key_helper(bins[index_b], "Ashlyn"), True)
+
+  def test_hash_keys(self):
+    ht = make_hash(5)
+    add(ht, "Armaan", 1)
+    add(ht, "Ashlyn", 2)
+    self.assertEqual(hash_keys(ht), ["Armaan", "Ashlyn"])
+    self.assertNotEqual(hash_keys(ht), ["Armaan", "Ashlyn", "Philbrick"])
+
+  def test_make_concordance(self):
+    ht = make_hash(5)
+    add(ht, "the", 0)
+    lst : list[str] = ["The class is fun", "The class is long"]
+    concordance = make_concordance(ht, lst)
+    self.assertEqual(has_key(concordance, "the"), False)
+    self.assertEqual(lookup(concordance, "class"), [2, 1])
 
   
 if (__name__ == '__main__'):
